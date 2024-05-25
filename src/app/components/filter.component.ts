@@ -9,6 +9,8 @@ import {
   Output,
 } from "@angular/core"
 
+import { FormsModule, ReactiveFormsModule } from "@angular/forms"
+
 import { Subscription } from "rxjs"
 
 import { DropdownComponent } from "src/app/components/dropdown.component"
@@ -26,6 +28,8 @@ interface IDistinct {
   templateUrl: "./filter.component.html",
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     DropdownComponent,
   ],
 })
@@ -41,10 +45,16 @@ export class FilterComponent implements OnDestroy {
 
   private readonly _subscriptions = new Subscription()
 
+  protected search: string = ""
+  protected placeholder: string = "Digite o filtro"
   protected distinct: IDistinct[] = []
 
   ngOnDestroy(): void {
     this._subscriptions.unsubscribe()
+  }
+
+  get searchDistinct(): IDistinct[] {
+    return this.distinct.filter(item => item.value.includes(this.search))
   }
 
   protected onOpenDropdown = () => {
