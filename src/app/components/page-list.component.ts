@@ -243,7 +243,7 @@ export class PageListComponent implements OnInit, OnDestroy {
 
   protected onFilter = (search: string) => {
     this.search = search
-    localStorage.setItem(`@excel:search`, this.search)
+    localStorage.setItem(`@excel:search`, this.search || "")
 
     this.filterParams = {}
 
@@ -261,7 +261,7 @@ export class PageListComponent implements OnInit, OnDestroy {
   }
 
   protected onSearch = () => {
-    localStorage.setItem(`@excel:search`, this.search)
+    localStorage.setItem(`@excel:search`, this.search || "")
     this._page = 0
     this._getData()
   }
