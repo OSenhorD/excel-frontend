@@ -13,7 +13,7 @@
   [is-loading]="isLoading"
   (on-page-set)="onPageSet($event)"
   (on-search)="search = $event; onSearch()"
-  (on-filter)="onFilter()"
+  (on-filter)="onFilter($event)"
   (on-selected)="onTableSelectedEvent.emit($event)"
   (on-unselected)="onTableUnselectedEvent.emit($event)"
   (on-all-selected)="onTableAllSelectedEvent.emit($event)"

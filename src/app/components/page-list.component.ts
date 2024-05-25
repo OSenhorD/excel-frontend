@@ -213,7 +213,8 @@ export class PageListComponent implements OnInit, OnDestroy {
   protected isLoading: boolean = true
 
   ngOnInit(): void {
-    this.onFilter()
+    const search = localStorage.getItem(`@excel:search`) || ""
+    this.onFilter(search)
   }
 
   ngOnDestroy(): void {
@@ -235,10 +236,15 @@ export class PageListComponent implements OnInit, OnDestroy {
 
   protected refresh = () => {
     this._page = 0
-    this.onFilter()
+
+    const search = localStorage.getItem(`@excel:search`) || ""
+    this.onFilter(search)
   }
 
-  protected onFilter = () => {
+  protected onFilter = (search: string) => {
+    this.search = search
+    localStorage.setItem(`@excel:search`, this.search)
+
     this.filterParams = {}
 
     this.tableColumns

@@ -265,6 +265,8 @@ export class DataListComponent {
     const excel = await this._excelService.getExcelAsync(url, filename)
     if (!excel) return
 
+    localStorage.removeItem(`@excel:search`)
+
     this.columns
       .map(col => col.property)
       .forEach(col => localStorage.removeItem(`@excel:filter:${col}`))

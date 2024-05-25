@@ -5,10 +5,17 @@ import {
   EventEmitter,
   inject,
   Input,
+  OnInit,
   Output,
 } from "@angular/core"
 
-import { FormsModule, ReactiveFormsModule } from "@angular/forms"
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms"
+
+import { debounceTime, distinctUntilChanged } from "rxjs"
 
 import { PaginateComponent } from "src/app/components/paginate.component"
 import { ISearchLiterals, SearchComponent } from "src/app/components/search.component"
@@ -21,8 +28,9 @@ import {
   TableActionsComponent,
 } from "src/app/components/table-actions.component"
 
+import { AlertService } from "src/app/services/alert.service"
+
 import { IItem } from "src/app/interfaces/shared/shared"
-import { AlertService } from "../services/alert.service"
 
 interface IColumnStyle {
   class?: { [key: string]: boolean | Function }
@@ -87,7 +95,7 @@ export interface ITableLiterals {
   ],
 })
 
-export class TableComponent {
+export class TableComponent implements OnInit {
   private readonly _alertService: AlertService = inject(AlertService)
 
   @Input() columns: ITableColumn[] = []
@@ -132,14 +140,34 @@ export class TableComponent {
   @Output("on-page-set") protected readonly onPageSetEvent = new EventEmitter<number>()
 
   @Output("on-search") protected readonly onSearchEvent = new EventEmitter<string>()
-  @Output("on-filter") protected readonly onFilterEvent = new EventEmitter()
+  @Output("on-filter") protected readonly onFilterEvent = new EventEmitter<string>()
 
   @Output("on-selected") protected readonly onSelectedEvent = new EventEmitter<IItem>()
   @Output("on-unselected") protected readonly onUnselectedEvent = new EventEmitter<IItem>()
   @Output("on-all-selected") protected readonly onAllSelectedEvent = new EventEmitter<IItem>()
   @Output("on-all-unselected") protected readonly onAllUnselectedEvent = new EventEmitter<IItem>()
 
+  protected readonly formSearch: FormControl<string> = new FormControl("", { nonNullable: true })
+
+  ngOnInit(): void {
+    this.formSearch.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+    ).subscribe((res) => {
+      this.page = 0
+      this.onSearchEvent.emit(res)
+    })
+  }
+
+  protected onFilter = () => {
+    const search = localStorage.getItem(`@excel:search`) || ""
+    this.onFilterEvent.emit(search)
+  }
+
   protected onClearFilters = () => {
+    localStorage.removeItem(`@excel:search`)
+    this.formSearch.setValue("", { emitEvent: false })
+
     this.columns
       .map(col => col.property)
       .forEach(col => localStorage.removeItem(`@excel:filter:${col}`))
@@ -148,11 +176,6 @@ export class TableComponent {
     this._alertService.success(title, message)
 
     this.onFilterEvent.emit()
-  }
-
-  protected onSearch = (search: string) => {
-    this.page = 0
-    this.onSearchEvent.emit(search)
   }
 
   protected onPageSet = (page: number) => {

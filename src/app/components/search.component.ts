@@ -1,14 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from "@angular/core"
+import { Component, Input } from "@angular/core"
 
 import { FormControl, ReactiveFormsModule } from "@angular/forms"
-
-import { debounceTime, distinctUntilChanged } from "rxjs"
 
 export interface ISearchLiterals {
   label: string
@@ -24,22 +16,13 @@ export interface ISearchLiterals {
   ],
 })
 
-export class SearchComponent implements OnInit {
+export class SearchComponent {
   @Input({ transform: transformLiterals }) literals: ISearchLiterals = {
     label: "Pesquisar",
     placeholder: "Pesquisar registros",
   }
 
-  @Output("on-search") onSearchEvent = new EventEmitter<string>()
-
-  search = new FormControl("", { nonNullable: true })
-
-  ngOnInit(): void {
-    this.search.valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-    ).subscribe((res) => this.onSearchEvent.emit(res))
-  }
+  @Input() search!: FormControl<string>
 }
 
 function transformLiterals(literals?: ISearchLiterals): ISearchLiterals {
