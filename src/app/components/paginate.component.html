@@ -1,0 +1,44 @@
+<nav aria-label="Table navigation"
+  class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4">
+  <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+    {{ literals.showing }}
+
+    <span class="font-semibold text-gray-900 dark:text-white">
+      {{ (page * pageSize) + 1 }} - {{ (page + 1) * pageSize }}
+    </span>
+  </span>
+
+  @if (pages.length > 0) {
+    <ul class="inline-flex items-stretch -space-x-px">
+      <li>
+        <a (click)="pagePrevious()"
+          class="flex items-center h-full py-1.5 px-3 rounded-l-lg border text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          <i class="fa-solid fa-angle-left"></i>
+        </a>
+      </li>
+
+      @for (page of pages; track $index) {
+      <li class="w-10">
+        @if (pageIsActive(page)) {
+        <a (click)="pageSet(page)"
+          class="flex items-center text-sm py-2 px-3 leading-tight border text-primary-600 bg-primary-50 border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
+          {{ page }}
+        </a>
+        } @else {
+        <a (click)="pageSet(page)"
+          class="flex items-center text-sm py-2 px-3 leading-tight border text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          {{ page }}
+        </a>
+        }
+      </li>
+      }
+
+      <li>
+        <a (click)="pageNext()"
+          class="flex items-center h-full py-1.5 px-3 rounded-l-lg border text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          <i class="fa-solid fa-angle-right"></i>
+        </a>
+      </li>
+    </ul>
+  }
+</nav>

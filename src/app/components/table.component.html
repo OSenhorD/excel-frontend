@@ -1,0 +1,165 @@
+<section class="bg-gray-50 dark:bg-gray-900 antialiased">
+  <div class="mx-auto max-w-screen-2xl p-4">
+    <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+        <div class="flex-1 flex items-center space-x-2">
+          <h5>
+            <span class="text-gray-500">
+              {{ literals.all_items }}
+            </span>
+
+            <span class="pl-2 dark:text-white">
+              {{ countTotalItems }}
+            </span>
+          </h5>
+        </div>
+
+        <!-- TODO: Modal de configurações -->
+        <div
+          class="flex-shrink-0 flex flex-col items-start md:flex-row md:items-center lg:justify-end space-y-3 md:space-y-0 md:space-x-3">
+          <button type="button"
+            class="flex-shrink-0 inline-flex items-center justify-center py-2 px-3 gap-2 text-xs font-medium focus:outline-none focus:z-10 focus:ring-4 rounded-lg border text-gray-900 bg-white border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+            <i class="fa-solid fa-gear"></i>
+            {{ literals.table_settings }}
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
+        <div class="w-full md:w-1/2">
+          <custom-search
+            [literals]="literals.search"
+            (on-search)="onSearch($event)"
+            >
+          </custom-search>
+        </div>
+
+        <custom-table-actions
+          [items]="items"
+          [actions]="actions"
+          [literals]="literals.actions"
+          >
+        </custom-table-actions>
+      </div>
+
+      <!-- TODO: PageList de acordo com tamanho da tela -->
+      <div class="overflow-x-auto">
+        @if (isLoading) {
+          <custom-skeleton-list></custom-skeleton-list>
+        } @else {
+          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                @if (settings.selected) {
+                  <th scope="col" class="p-4 w-4">
+                    @if (!settings.singleSelected) {
+                      <div class="flex items-center">
+                        <input type="checkbox"
+                          class="text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                      </div>
+                    }
+                  </th>
+                }
+
+                @for (column of columns; track column.property) {
+                  <th scope="col" class="p-4">
+                    {{ column?.label || column?.property }}
+                  </th>
+                }
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (item of items; track item.id; let idxI = $index) {
+                <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                  @if (settings.selected) {
+                    <td class="p-4 w-4" (click)="onChangeSelected(item, idxI)">
+                      <div class="flex items-center">
+                        <input
+                          type="checkbox"
+                          [checked]="item.$selected"
+                          >
+                      </div>
+                    </td>
+                  }
+
+                  @for (column of columns; track column.property; let idxC = $index) {
+                    @switch (column.type) {
+                      @case ("label") {
+                        <td class="px-4 py-3">
+                          <span
+                            class="text-xs font-medium px-2 py-0.5 rounded"
+                            [ngClass]="getLabelClass(item, column, idxI, idxC, item[column.property])"
+                            [ngStyle]="getLabelStyle(item, column, idxI, idxC, item[column.property])"
+                            >
+                            {{ getLabelValue(column, item[column.property]) }}
+                          </span>
+                        </td>
+                      }
+
+                      @default {
+                        <td
+                          class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          [class.flex]="column.image"
+                          [class.items-center]="column.image"
+                          [ngClass]="getClass(item, column, idxI, idxC, column?.class)"
+                          [ngStyle]="getStyle(item, column, idxI, idxC, column?.styles)"
+                          >
+                          @if (column.image) {
+                            <img
+                              class="h-8 mr-2"
+                              [ngClass]="getClass(item, column, idxI, idxC, column?.image?.class)"
+                              [ngStyle]="getStyle(item, column, idxI, idxC, column?.image?.styles)"
+                              [src]="item[column?.image?.propertySrc || ''] ||''"
+                              [alt]="column?.image?.propertyAlt || 'Image Item'"
+                              >
+                          }
+
+                          @if (column.icon) {
+                            <i
+                              class="{{ column?.icon?.name }} ml-2"
+                              [ngClass]="getClass(item, column, idxI, idxC, column?.icon?.class)"
+                              [ngStyle]="getStyle(item, column, idxI, idxC, column?.icon?.styles)"
+                              >
+                            </i>
+                          }
+
+                          @switch (column.type) {
+                            @case ("date") {
+                              {{ item[column.property] || "" | date: column.format || "dd/MM/YYYY" }}
+                            }
+
+                            @case ("time") {
+                              {{ item[column.property] || "" | date: column.format || "HH:mm:ss" }}
+                            }
+
+                            @case ("datetime") {
+                              {{ item[column.property] || "" | date: column.format || "YYYY-MM-dd HH:mm:ss" }}
+                            }
+
+                            @default {
+                              {{ item[column.property] }}
+                            }
+                          }
+                        </td>
+                      }
+                    }
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+
+      <custom-paginate
+        [page]="page"
+        [page-size]="pageSize"
+        [count-total-items]="countTotalItems"
+        (on-page-set)="onPageSet($event)"
+        >
+      </custom-paginate>
+    </div>
+  </div>
+</section>

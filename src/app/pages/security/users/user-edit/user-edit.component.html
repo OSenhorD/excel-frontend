@@ -1,0 +1,71 @@
+<custom-loading [is-loading]="isLoading"></custom-loading>
+
+@if (!isLoading) {
+  <custom-page-edit
+    [page-type]="pageType"
+    [literals]="literals.page_edit"
+    [disabled]="!form.valid"
+    (on-save)="onSave()"
+    (on-close)="goBack()"
+    (on-discart)="goBack()"
+    >
+  </custom-page-edit>
+
+  <form [formGroup]="form" class="mb-4 gap-4 grid grid-cols-12">
+    <form-input class="col-span-12 md:col-span-6"
+      name="name"
+      [label]="literals.form.name.label"
+      [required]="true"
+      [readonly]="readonly"
+      [minlength]="3"
+      [maxlength]="30"
+      [placeholder]="literals.form.name.placeholder"
+      >
+    </form-input>
+
+    <form-email class="col-span-12 md:col-span-6"
+      name="email"
+      [label]="literals.form.email.label"
+      [required]="true"
+      [readonly]="readonly"
+      [minlength]="15"
+      [maxlength]="35"
+      [placeholder]="literals.form.email.placeholder"
+      >
+    </form-email>
+
+    @if (isNew()) {
+      <form-password class="col-span-12 md:col-span-6"
+        name="password"
+        [label]="literals.form.password.label"
+        [required]="true"
+        [readonly]="readonly"
+        [minlength]="6"
+        [maxlength]="30"
+        [placeholder]="literals.form.password.placeholder"
+        >
+      </form-password>
+    }
+
+    <form-upload class="col-span-12 md:col-span-8"
+      name="avatar"
+      [label]="literals.form.avatar.label"
+      [readonly]="readonly"
+      >
+    </form-upload>
+
+    <form-toggle class="col-span-6 md:col-span-2"
+      name="isActive"
+      [label]="literals.form.isActive.label"
+      [readonly]="readonly"
+      >
+    </form-toggle>
+
+    <form-toggle class="col-span-6 md:col-span-2"
+      name="isAdmin"
+      [label]="literals.form.isAdmin.label"
+      [readonly]="readonly"
+      >
+    </form-toggle>
+  </form>
+}

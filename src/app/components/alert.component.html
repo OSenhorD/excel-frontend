@@ -1,0 +1,58 @@
+<ng-template #alertTemplate let-alert="alert">
+  @if (alert.title || alert.message) {
+  <div>
+    @if (alert.title) {
+    <div class="flex items-center">
+      <i class="fa-solid fa-circle-exclamation mt-1"></i>
+
+      <p class="pl-2 font-bold">{{ alert.title }}</p>
+    </div>
+    }
+
+    @if (alert.message) {
+    <p class="text-gray-500 dark:text-gray-400">{{ alert.message }}</p>
+    }
+  </div>
+  }
+
+  <button type="button" (click)="exit(alert.id)"
+    class="ms-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 focus:ring-2 bg-white dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</ng-template>
+
+@for (alert of alerts; track alert.id) {
+  @switch (alert.type ) {
+    @case ('success') {
+      <div role="alert"
+        class="flex items-center m-2 p-4 rounded-lg shadow bg-white dark:bg-gray-800 text-green-500 dark:text-green-400">
+        <ng-container [ngTemplateOutlet]="alertTemplate" [ngTemplateOutletContext]="{ alert }">
+        </ng-container>
+      </div>
+    }
+
+    @case ('danger') {
+      <div role="alert"
+        class="flex items-center m-2 p-4 rounded-lg shadow bg-white dark:bg-gray-800 text-red-500 dark:text-red-400">
+        <ng-container [ngTemplateOutlet]="alertTemplate" [ngTemplateOutletContext]="{ alert }">
+        </ng-container>
+      </div>
+    }
+
+    @case ('warning') {
+      <div role="alert"
+        class="flex items-center m-2 p-4 rounded-lg shadow bg-white dark:bg-gray-800 text-yellow-500 dark:text-yellow-400">
+        <ng-container [ngTemplateOutlet]="alertTemplate" [ngTemplateOutletContext]="{ alert }">
+        </ng-container>
+      </div>
+    }
+
+    @default {
+      <div role="alert"
+        class="flex items-center m-2 p-4 rounded-lg shadow bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+        <ng-container [ngTemplateOutlet]="alertTemplate" [ngTemplateOutletContext]="{ alert }">
+        </ng-container>
+      </div>
+    }
+  }
+}

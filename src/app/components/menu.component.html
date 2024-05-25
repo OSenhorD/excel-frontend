@@ -1,0 +1,99 @@
+<ng-template #menus let-menus="menus" let-submenu="submenu">
+  <ul [class.pt-2]="!submenu">
+    @for (menu of menus; track menu.id) {
+    <li>
+      <ng-container [ngTemplateOutlet]="menu.children.length == 0 ? menuWithoutChildren : menuWithChildren"
+        [ngTemplateOutletContext]="{ menu, submenu }">
+      </ng-container>
+    </li>
+    }
+  </ul>
+</ng-template>
+
+<ng-template #menuWithoutChildren let-menu="menu" let-submenu="submenu">
+  <a (click)="go(menu.route)"
+    class="flex items-center p-2 text-base font-normal rounded-lg group text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+    @if (!submenu && menu.icon) {
+    <i [class]="menu.icon"></i>
+    }
+
+    <span [class]="submenu ? 'ml-7' : 'ml-3'">
+      {{ menu.label }}
+    </span>
+  </a>
+</ng-template>
+
+<ng-template #menuWithChildren let-menu="menu" let-submenu="submenu">
+  <button type="button" (click)="childrenOpen = childrenOpen == menu.id ? '' : menu.id"
+    class="flex items-center p-2 w-full text-base font-normal rounded-lg transition duration-75 group text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+    @if (!submenu && menu.icon) {
+    <i [class]="menu.icon"></i>
+    }
+
+    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+      {{ menu.label }}
+    </span>
+
+    @if (childrenOpen == menu.id) {
+    <i class="fa-solid fa-chevron-up"></i>
+    } @else {
+    <i class="fa-solid fa-chevron-down"></i>
+    }
+  </button>
+
+  @if (childrenOpen == menu.id) {
+  <ng-container [ngTemplateOutlet]="menus" [ngTemplateOutletContext]="{ menus: menu.children, submenu: true }">
+  </ng-container>
+  }
+</ng-template>
+
+<button type="button" (click)="openMenu()"
+  class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+  <span class="sr-only">
+    {{ literals.open_menu }}
+  </span>
+
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+@if (open) {
+  <div id="box" class="fixed top-0 left-0 w-full h-full z-10 bg-[#26242433]"></div>
+}
+
+<aside aria-label="Sidenav" [class.-translate-x-full]="!open"
+  class="fixed top-0 left-0 z-20 w-64 h-screen transition-transform sm:translate-x-0">
+  <div class="overflow-y-auto py-3 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <div class="divide-y divide-dashed md:divide-solid">
+      <div class="text-center">
+        <img
+          alt="Avatar do usuário"
+          [src]="user['avatar'] || noImage"
+          class="inline-block w-20 rounded-full ring-2 ring-white"
+          >
+
+        <h5 class="mt-2 font-normal text-gray-900 dark:text-white">
+          {{ user.name || "Usuário" }}
+        </h5>
+
+        <span class="block truncate font-normal text-gray-900 dark:text-white">
+          {{ user.email || "example@example.com" }}
+        </span>
+
+        <div class="flex gap-4 justify-center mt-4 mb-4 text-gray-900 dark:text-white">
+          <i (click)="editPerfil()" class="text-blue-500 fa-solid fa-user-pen"></i>
+
+          <!-- @if (false) {
+          <i (click)="showNotifications()" class="fa-solid fa-bell"></i>
+          } @else {
+          <i class="fa-regular fa-bell"></i>
+          } -->
+
+          <i (click)="exit()" class="text-red-500 fa-solid fa-right-from-bracket"></i>
+        </div>
+      </div>
+
+      <ng-container [ngTemplateOutlet]="menus" [ngTemplateOutletContext]="{ menus: allMenus }">
+      </ng-container>
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,45 @@
+<div class="min-h-screen flex flex-col justify-center">
+  <div class="bg-white mx-auto py-8 px-10 shadow rounded-lg w-96 dark:bg-gray-800 dark:border-gray-700">
+    <div class="mb-4">
+      <img id="logo" class="rounded-full w-24 mx-auto" src="/assets/images/logo.png" alt="Logo Excel">
+    </div>
+
+    <form [formGroup]="form">
+      <div class="mb-4">
+        <label for="form_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          {{ literals.form.email.label }}
+        </label>
+
+        <input id="form_email" type="text" formControlName="email" [placeholder]="literals.form.email.placeholder"
+          class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          (keydown)="emailOnKeydown($event)">
+      </div>
+
+      <div class="mb-4">
+        <label for="form_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          {{ literals.form.password.label }}
+        </label>
+
+        <input id="form_password" type="password" formControlName="password"
+          [placeholder]="literals.form.password.placeholder"
+          class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          (keydown)="passwordOnKeydown($event)">
+      </div>
+
+      <div class="mb-4">
+        <button [disabled]="isLoading || !form.valid" (click)="onSubmit()"
+          class="inline-block w-full px-8 py-4 leading-none text-white bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow disabled:opacity-50">
+          {{ literals.on_submit.submit }}
+        </button>
+      </div>
+
+      <div class="nb-4">
+        <p>
+          <a (click)="onRecovery()" class="text-indigo-600">
+            {{ literals.forgot_password }}
+          </a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
