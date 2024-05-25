@@ -63,8 +63,13 @@
                 }
 
                 @for (column of columns; track column.property) {
-                  <th scope="col" class="p-4">
-                    {{ column?.label || column?.property }}
+                  <th scope="col" class="relative p-4">
+                    <custom-filter
+                      [api]="api"
+                      [column]="column?.property || ''"
+                      [label]="column?.label || column?.property || ''"
+                      >
+                    </custom-filter>
                   </th>
                 }
               </tr>

@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { PaginateComponent } from "src/app/components/paginate.component"
 import { ISearchLiterals, SearchComponent } from "src/app/components/search.component"
 import { SkeletonListComponent } from "src/app/components/skeleton-list.component"
+import { FilterComponent } from "src/app/components/filter.component"
 
 import {
   ITableAction,
@@ -76,12 +77,15 @@ export interface ITableLiterals {
     SearchComponent,
     TableActionsComponent,
     SkeletonListComponent,
+    FilterComponent,
   ],
 })
 
 export class TableComponent {
   @Input() columns: ITableColumn[] = []
   @Input() items: IItem[] = []
+
+  @Input() api: string = ""
 
   @Input() page: number = 0
   @Input("page-size") pageSize: number = 15

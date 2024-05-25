@@ -1,0 +1,30 @@
+<div class="flex items-center">
+  {{ label || column }}
+
+  <custom-dropdown (on-open)="onOpenDropdown()">
+    <div [ngStyle]="{
+      'width': getWidth(),
+      }"
+      >
+      <span>Filtre por:</span>
+
+      <div class="mt-2 overflow-x-auto" style="height: 300px;">
+        @for (item of distinct; track $index) {
+          <div class="flex items-center m-2">
+            <span
+              class="ml-2 border rounded-xl"
+              style="padding: .25rem .75rem;"
+              [ngClass]="{
+                'border-red-700': !item.$selected,
+                'border-green-700': item.$selected,
+              }"
+              (click)="item.$selected = !item.$selected"
+              >
+              {{ item.value }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </custom-dropdown>
+</div>
