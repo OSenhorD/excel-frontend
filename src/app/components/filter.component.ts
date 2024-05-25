@@ -2,9 +2,11 @@ import { CommonModule } from "@angular/common"
 
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   OnDestroy,
+  Output,
 } from "@angular/core"
 
 import { Subscription } from "rxjs"
@@ -12,6 +14,11 @@ import { Subscription } from "rxjs"
 import { DropdownComponent } from "src/app/components/dropdown.component"
 
 import { RestService } from "src/app/services/rest.service"
+
+interface IDistinct {
+  value: string
+  $selected?: boolean
+}
 
 @Component({
   selector: "custom-filter",
@@ -30,16 +37,34 @@ export class FilterComponent implements OnDestroy {
   @Input({ required: true }) column: string = ""
   @Input({ required: true }) api: string = ""
 
+  @Output("on-filter") onFilterEvent = new EventEmitter<string[]>()
+
   private readonly _subscriptions = new Subscription()
 
-  protected distinct: { value: string, $selected?: boolean }[] = []
+  protected distinct: IDistinct[] = []
 
   ngOnDestroy(): void {
     this._subscriptions.unsubscribe()
   }
 
+  protected hasFilterSelected = () => {
+    return this.distinct.some(item => item.$selected)
+  }
+
   protected onOpenDropdown = () => {
     this._getDistinct()
+  }
+
+  protected onApply = () => {
+    const values = this.distinct.filter(item => item.$selected).map(item => item.value)
+    this.onFilterEvent.emit(values)
+  }
+
+  protected onSelectFilter = (item: IDistinct) => {
+    item.$selected = !item.$selected
+
+    const values = this.distinct.filter(item => item.$selected).map(item => item.value)
+    localStorage.setItem(`@excel:filter:${this.column}`, values.join(";;;"))
   }
 
   protected getWidth = () => {
@@ -54,8 +79,10 @@ export class FilterComponent implements OnDestroy {
         .get(`/${this.api}/distinct/${this.column}`)
         .subscribe({
           next: (res: any) => {
+            const valuesStorage = (localStorage.getItem(`@excel:filter:${this.column}`) || "").split(";;;")
+
             const items: string[] = Array.isArray(res.data) ? res.data : []
-            this.distinct = items.map(item => ({ value: item }))
+            this.distinct = items.map(item => ({ value: item, $selected: valuesStorage.includes(item) }))
           },
           error: (error: Error) => console.error(error),
         })

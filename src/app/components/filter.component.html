@@ -18,12 +18,22 @@
                 'border-red-700': !item.$selected,
                 'border-green-700': item.$selected,
               }"
-              (click)="item.$selected = !item.$selected"
+              (click)="onSelectFilter(item)"
               >
               {{ item.value }}
             </span>
           </div>
         }
+      </div>
+
+      <div class="mt-4 text-center">
+        <button
+          [disabled]="!hasFilterSelected()"
+          class="inline-block px-2 py-2 leading-none text-white bg-indigo-600 hover:bg-indigo-700 font-semibold rounded shadow disabled:opacity-50"
+          (click)="onApply()"
+          >
+          Aplicar
+        </button>
       </div>
     </div>
   </custom-dropdown>
