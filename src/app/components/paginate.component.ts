@@ -1,8 +1,8 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
 } from "@angular/core"
 
@@ -16,7 +16,7 @@ interface IPaginateLiterals {
   templateUrl: "./paginate.component.html",
 })
 
-export class PaginateComponent implements OnInit {
+export class PaginateComponent implements AfterViewInit {
   @Input() page: number = 0
   @Input("page-size") pageSize: number = 15
   @Input("count-total-items") countTotalItems: number = 0
@@ -31,7 +31,7 @@ export class PaginateComponent implements OnInit {
 
   protected pages: string[] = []
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this._buildPages()
   }
 

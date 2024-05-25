@@ -225,6 +225,7 @@ export class PageListComponent implements OnInit, OnDestroy {
 
   protected onPageSet = (page: number) => {
     this._page = page
+    this._getData()
   }
 
   protected refresh = () => {
