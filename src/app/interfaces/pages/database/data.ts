@@ -66,10 +66,12 @@ export interface IListLiterals {
       import: {
         label: string
         success: string
+        loading: string
       }
       export: {
         label: string
         success: string
+        loading: string
       }
     }
   }

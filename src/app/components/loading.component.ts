@@ -12,5 +12,6 @@ import { CommonModule } from "@angular/common"
 })
 
 export class LoadingComponent {
+  @Input() text: string = "Carregando..."
   @Input("is-loading") isLoading: boolean = false
 }

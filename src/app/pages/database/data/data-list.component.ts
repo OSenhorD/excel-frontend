@@ -65,10 +65,12 @@ export class DataListComponent {
       actions: {
         import: {
           label: "Importar",
+          loading: "Importando Excel...",
           success: "Relatório importado com sucesso!",
         },
         export: {
           label: "Exportar",
+          loading: "Criando Excel...",
           success: "Relatório exportado com sucesso!",
         },
       },

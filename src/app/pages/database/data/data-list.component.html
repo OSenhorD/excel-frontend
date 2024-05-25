@@ -44,5 +44,5 @@
     </div>
   </custom-modal>
 } @else {
-  <custom-loading [is-loading]="true"></custom-loading>
+  <custom-loading [is-loading]="true" [text]="isLoadingImport ? literals.table.actions.import.loading : literals.table.actions.export.loading"></custom-loading>
 }
