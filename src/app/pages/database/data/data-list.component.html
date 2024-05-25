@@ -1,6 +1,4 @@
-
-
-@if (!isLoadingImport) {
+@if (!isLoadingImport && !isLoadingExport) {
   <custom-page-list
     [title]="literals.title"
     api="database/data"

@@ -196,6 +196,7 @@ export class DataListComponent {
   )
 
   protected isLoadingImport: boolean = false
+  protected isLoadingExport: boolean = false
   protected isShowModalImport: boolean = false
 
   protected readonly fileRestrictions: IUploadRestrictions = {
@@ -231,6 +232,7 @@ export class DataListComponent {
   }
 
   private _export = async () => {
+    this.isLoadingExport = true
     const date = new Date().toISOString().split("T")[0]
 
     const filename = `Dados ${date}`
@@ -238,5 +240,10 @@ export class DataListComponent {
 
     const excel = await this._excelService.getExcelAsync(url, filename)
     if (!excel) return
+
+    this.isLoadingExport = false
+
+    const { label, success } = this.literals.table.actions.export
+    this._alertService.success(label, success)
   }
 }
