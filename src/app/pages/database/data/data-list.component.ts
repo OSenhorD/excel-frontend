@@ -234,7 +234,7 @@ export class DataListComponent {
     const date = new Date().toISOString().split("T")[0]
 
     const filename = `Dados ${date}`
-    const url = `database/data/export`
+    const url = `/database/data/export`
 
     const excel = await this._excelService.getExcelAsync(url, filename)
     if (!excel) return
