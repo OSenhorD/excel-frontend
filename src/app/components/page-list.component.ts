@@ -64,6 +64,7 @@ export class PageListComponent implements OnInit, OnDestroy {
   @Input("page-size") pageSize: number = 15
   @Input("count-total-items") countTotalItems: number = 0
 
+  protected filterParams!: IParams
   // Parâmetros que serão usados na construção da url para consumo da API
   @Input("params") customParams!: IParams
   // Parâmetros que serão usados na construção do formulário de criação, edição ou visualização
@@ -208,7 +209,7 @@ export class PageListComponent implements OnInit, OnDestroy {
   protected isLoading: boolean = true
 
   ngOnInit(): void {
-    this._getData()
+    this.onFilter()
   }
 
   ngOnDestroy(): void {
@@ -229,6 +230,22 @@ export class PageListComponent implements OnInit, OnDestroy {
   }
 
   protected refresh = () => {
+    this._page = 0
+    this.onFilter()
+  }
+
+  protected onFilter = () => {
+    this.filterParams = {}
+
+    this.tableColumns
+      .map(col => col.property)
+      .forEach(col => {
+        const valuesStorage = (localStorage.getItem(`@excel:filter:${col}`) || "").split(";;;")
+        if (valuesStorage[0].trim() == "") return
+
+        this.filterParams[col] = valuesStorage.join(";")
+      })
+
     this._page = 0
     this._getData()
   }
@@ -264,7 +281,10 @@ export class PageListComponent implements OnInit, OnDestroy {
       this._page,
       this.pageSize,
       this.search,
-      this.customParams,
+      {
+        ...this.filterParams,
+        ...this.customParams,
+      },
     )
 
     this._subscriptions.add(

@@ -68,6 +68,7 @@
                       [api]="api"
                       [column]="column?.property || ''"
                       [label]="column?.label || column?.property || ''"
+                      (on-filter)="onFilterEvent.emit()"
                       >
                     </custom-filter>
                   </th>

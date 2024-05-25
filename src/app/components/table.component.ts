@@ -120,6 +120,7 @@ export class TableComponent {
   @Output("on-page-set") protected readonly onPageSetEvent = new EventEmitter<number>()
 
   @Output("on-search") protected readonly onSearchEvent = new EventEmitter<string>()
+  @Output("on-filter") protected readonly onFilterEvent = new EventEmitter()
 
   @Output("on-selected") protected readonly onSelectedEvent = new EventEmitter<IItem>()
   @Output("on-unselected") protected readonly onUnselectedEvent = new EventEmitter<IItem>()

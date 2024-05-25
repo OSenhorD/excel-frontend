@@ -37,7 +37,7 @@ export class FilterComponent implements OnDestroy {
   @Input({ required: true }) column: string = ""
   @Input({ required: true }) api: string = ""
 
-  @Output("on-filter") onFilterEvent = new EventEmitter<string[]>()
+  @Output("on-filter") onFilterEvent = new EventEmitter()
 
   private readonly _subscriptions = new Subscription()
 
@@ -53,11 +53,6 @@ export class FilterComponent implements OnDestroy {
 
   protected onOpenDropdown = () => {
     this._getDistinct()
-  }
-
-  protected onApply = () => {
-    const values = this.distinct.filter(item => item.$selected).map(item => item.value)
-    this.onFilterEvent.emit(values)
   }
 
   protected onSelectFilter = (item: IDistinct) => {
