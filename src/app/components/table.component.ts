@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common"
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   Output,
 } from "@angular/core"
@@ -21,6 +22,7 @@ import {
 } from "src/app/components/table-actions.component"
 
 import { IItem } from "src/app/interfaces/shared/shared"
+import { AlertService } from "../services/alert.service"
 
 interface IColumnStyle {
   class?: { [key: string]: boolean | Function }
@@ -61,6 +63,10 @@ export interface ITableSettings {
 export interface ITableLiterals {
   all_items: string
   table_settings: string
+  clear_filters: {
+    title: string
+    message: string
+  }
   search: ISearchLiterals,
   actions: ITableActionsLiterals
 }
@@ -82,6 +88,8 @@ export interface ITableLiterals {
 })
 
 export class TableComponent {
+  private readonly _alertService: AlertService = inject(AlertService)
+
   @Input() columns: ITableColumn[] = []
   @Input() items: IItem[] = []
 
@@ -98,6 +106,10 @@ export class TableComponent {
   @Input({ transform: transformLiterals }) literals: ITableLiterals = {
     all_items: "Todos os itens",
     table_settings: "Configurações",
+    clear_filters: {
+      title: "Limpar Filtros",
+      message: "Filtros limpos com sucesso",
+    },
     search: {
       label: "Pesquisar",
       placeholder: "Pesquisar registros",
@@ -126,6 +138,17 @@ export class TableComponent {
   @Output("on-unselected") protected readonly onUnselectedEvent = new EventEmitter<IItem>()
   @Output("on-all-selected") protected readonly onAllSelectedEvent = new EventEmitter<IItem>()
   @Output("on-all-unselected") protected readonly onAllUnselectedEvent = new EventEmitter<IItem>()
+
+  protected onClearFilters = () => {
+    this.columns
+      .map(col => col.property)
+      .forEach(col => localStorage.removeItem(`@excel:filter:${col}`))
+
+    const { title, message } = this.literals.clear_filters
+    this._alertService.success(title, message)
+
+    this.onFilterEvent.emit()
+  }
 
   protected onSearch = (search: string) => {
     this.page = 0
@@ -199,6 +222,10 @@ function transformLiterals(literals?: ITableLiterals): ITableLiterals {
   return {
     all_items: literals?.all_items || "Todos os itens",
     table_settings: literals?.table_settings || "Configurações",
+    clear_filters: {
+      title: literals?.clear_filters.title || "Limpar Filtros",
+      message: literals?.clear_filters.message || "Filtros limpos com sucesso",
+    },
     search: {
       label: literals?.search.label || "Pesquisar",
       placeholder: literals?.search.placeholder || "Pesquisar registros",

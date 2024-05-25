@@ -79,6 +79,10 @@ export class PageListComponent implements OnInit, OnDestroy {
     table: {
       all_items: "Todos os itens",
       table_settings: "Configurações",
+      clear_filters: {
+        title: "Limpar Filtros",
+        message: "Filtros limpos com sucesso",
+      },
       search: {
         label: "Pesquisar",
         placeholder: "Pesquisar registros",
