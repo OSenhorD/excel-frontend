@@ -1,7 +1,13 @@
 import { Component, inject } from "@angular/core"
-import { FormBuilder, FormControl, ReactiveFormsModule } from "@angular/forms"
+
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+} from "@angular/forms"
 
 import { PageListComponent } from "src/app/components/page-list.component"
+import { LoadingComponent } from "src/app/components/loading.component"
 import { ModalComponent } from "src/app/components/modal.component"
 import { ITableAction } from "src/app/components/table-actions.component"
 import { ITableColumn } from "src/app/components/table.component"
@@ -22,6 +28,7 @@ import { IDataListRes, IListLiterals } from "src/app/interfaces/pages/database/d
     PageListComponent,
     ModalComponent,
     UploadComponent,
+    LoadingComponent,
   ],
 })
 
