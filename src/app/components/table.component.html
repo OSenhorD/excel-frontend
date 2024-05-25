@@ -153,13 +153,15 @@
         }
       </div>
 
-      <custom-paginate
-        [page]="page"
-        [page-size]="pageSize"
-        [count-total-items]="countTotalItems"
-        (on-page-set)="onPageSet($event)"
-        >
-      </custom-paginate>
+      @if (items.length > 0) {
+        <custom-paginate
+          [page]="page"
+          [page-size]="pageSize"
+          [count-total-items]="countTotalItems"
+          (on-page-set)="onPageSet($event)"
+          >
+        </custom-paginate>
+      }
     </div>
   </div>
 </section>
