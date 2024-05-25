@@ -15,9 +15,11 @@ import { IUploadRestrictions, UploadComponent } from "src/app/components/forms/u
 
 import { AlertService } from "src/app/services/alert.service"
 import { ExcelService } from "src/app/services/excel.service"
+import { PageService } from "src/app/services/page.service"
 import { RestService } from "src/app/services/rest.service"
 
 import { IDataListRes, IListLiterals } from "src/app/interfaces/pages/database/data"
+import { IParams } from "src/app/interfaces/shared/shared"
 
 @Component({
   selector: "page-data-list",
@@ -36,6 +38,7 @@ export class DataListComponent {
   private readonly _formBuilder: FormBuilder = inject(FormBuilder)
   private readonly _alertService: AlertService = inject(AlertService)
   private readonly _excelService: ExcelService = inject(ExcelService)
+  private readonly _pageService: PageService = inject(PageService)
   private readonly _restService: RestService = inject(RestService)
 
   protected items: IDataListRes[] = []
@@ -238,7 +241,26 @@ export class DataListComponent {
     const date = new Date().toISOString().split("T")[0]
 
     const filename = `Dados ${date}`
-    const url = `/database/data/export`
+
+    const search = localStorage.getItem(`@excel:search`) || ""
+
+    const filterParams: IParams = {}
+    this.columns
+      .map(col => col.property)
+      .forEach(col => {
+        const valuesStorage = (localStorage.getItem(`@excel:filter:${col}`) || "").split(";;;")
+        if (valuesStorage[0].trim() == "") return
+
+        filterParams[col] = valuesStorage.join(";")
+      })
+
+    const url = this._pageService.createUrl(
+      `/database/data/export`,
+      0,
+      0,
+      search,
+      filterParams,
+    )
 
     const excel = await this._excelService.getExcelAsync(url, filename)
     if (!excel) return

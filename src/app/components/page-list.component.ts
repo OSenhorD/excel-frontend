@@ -251,6 +251,7 @@ export class PageListComponent implements OnInit, OnDestroy {
   }
 
   protected onSearch = () => {
+    localStorage.setItem(`@excel:search`, this.search)
     this._page = 0
     this._getData()
   }
