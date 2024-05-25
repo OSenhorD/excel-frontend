@@ -61,7 +61,7 @@ export class PageListComponent implements OnInit, OnDestroy {
   @Input({ required: true }) api: string = ""
 
   protected _page: number = 0
-  @Input("page-size") pageSize: number = 15
+  @Input("page-size") pageSize: number = Math.round((document.body.clientHeight - 325) / 100 * 2)
   @Input("count-total-items") countTotalItems: number = 0
 
   protected filterParams!: IParams
