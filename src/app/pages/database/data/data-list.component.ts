@@ -265,6 +265,10 @@ export class DataListComponent {
     const excel = await this._excelService.getExcelAsync(url, filename)
     if (!excel) return
 
+    this.columns
+      .map(col => col.property)
+      .forEach(col => localStorage.removeItem(`@excel:filter:${col}`))
+
     this.isLoadingExport = false
 
     const { label, success } = this.literals.table.actions.export
