@@ -61,4 +61,23 @@ export interface IListLiterals {
     CLASSIF_FUNCIONARIO: string
     VALOR: string
   }
+  table: {
+    actions: {
+      import: {
+        label: string
+        success: string
+      }
+      export: {
+        label: string
+        success: string
+      }
+    }
+  }
+  modal: {
+    import: {
+      confirm: string
+      cancel: string
+      upload: string
+    }
+  }
 }
