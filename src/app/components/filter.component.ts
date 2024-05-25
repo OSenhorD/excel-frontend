@@ -47,10 +47,6 @@ export class FilterComponent implements OnDestroy {
     this._subscriptions.unsubscribe()
   }
 
-  protected hasFilterSelected = () => {
-    return this.distinct.some(item => item.$selected)
-  }
-
   protected onOpenDropdown = () => {
     this._getDistinct()
   }
