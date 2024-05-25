@@ -64,7 +64,7 @@ export class RestService {
 
     if (!headers.has(name)) {
       headers = headers.set(name, value)
-    } else if (headers.get(name) != name) {
+    } else if (headers.get(name) != value) {
       headers = headers.set(name, value)
     }
 
