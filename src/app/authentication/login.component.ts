@@ -49,7 +49,7 @@ export class LoginComponent {
 
   protected readonly form = this._formBuilder.group(
     {
-      email: new FormControl("isis@gmail.com", {
+      email: new FormControl("", {
         nonNullable: true,
         validators: [
           Validators.required,
@@ -57,7 +57,7 @@ export class LoginComponent {
           Validators.maxLength(30),
         ],
       }),
-      password: new FormControl("senha12345", {
+      password: new FormControl("", {
         nonNullable: true,
         validators: [
           Validators.required,
