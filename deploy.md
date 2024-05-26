@@ -11,8 +11,8 @@ Procedimento para realizar a base do deploy da aplicação
 1- Criar pasta para a build:
 
 ```yml
-$ sudo mkdir -p /var/www/excel.davidmarques.com.br
-$ sudo chown -R $USER:$USER /var/www/excel.davidmarques.com.br
+$ sudo mkdir -p /var/www/cubo57.cloud
+$ sudo chown -R $USER:$USER /var/www/cubo57.cloud
 ```
 
 ## Configurar Nginx
@@ -20,7 +20,7 @@ $ sudo chown -R $USER:$USER /var/www/excel.davidmarques.com.br
 1- Criar arquivo de configuração Nginx:
 
 ```yml
-$ sudo vim /etc/nginx/sites-available/excel.davidmarques.com.br
+$ sudo vim /etc/nginx/sites-available/cubo57.cloud
 ```
 
 Inserir o seguinte conteúdo:
@@ -30,9 +30,9 @@ server {
   listen 80;
   listen [::]:80;
 
-  server_name excel.davidmarques.com.br;
+  server_name cubo57.cloud;
 
-  root /var/www/excel.davidmarques.com.br;
+  root /var/www/cubo57.cloud;
   index index.html;
 
   location / {
@@ -44,7 +44,7 @@ server {
 2- Criar link simbólico do arquivo de configuração:
 
 ```yml
-$ sudo ln -s /etc/nginx/sites-available/excel.davidmarques.com.br /etc/nginx/sites-enabled/
+$ sudo ln -s /etc/nginx/sites-available/cubo57.cloud /etc/nginx/sites-enabled/
 ```
 
 3- Testar e Reiniciar Nginx
@@ -60,9 +60,9 @@ $ sudo service nginx start
 1. Criar certificado
 
 ```yml
-$ sudo certbot --nginx -d excel.davidmarques.com.br
+$ sudo certbot --nginx -d cubo57.cloud
 ```
 
 2. Testar se os certificados estão com a classificação "A"
 
-https://ssllabs.com/ssltest/analyze.html?d=excel.davidmarques.com.br
+https://ssllabs.com/ssltest/analyze.html?d=cubo57.cloud

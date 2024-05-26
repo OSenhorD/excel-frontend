@@ -142,7 +142,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     // TODO: Encriptar a senha
     if (this.pageType === "new") {
-      formData.append("password", `${this.form.value.password}`)
+      formData.append("password", `${btoa(this.form.value.password || "")}`)
     }
 
     if (this.form.value?.avatar && this.form.value.avatar) {
