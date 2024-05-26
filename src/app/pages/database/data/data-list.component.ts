@@ -10,7 +10,7 @@ import { PageListComponent } from "src/app/components/page-list.component"
 import { LoadingComponent } from "src/app/components/loading.component"
 import { ModalComponent } from "src/app/components/modal.component"
 import { ITableAction } from "src/app/components/table-actions.component"
-import { ITableColumn } from "src/app/components/table.component"
+import { ITableColumn, ITableSettings } from "src/app/components/table.component"
 import { IUploadRestrictions, UploadComponent } from "src/app/components/forms/upload.component"
 
 import { AlertService } from "src/app/services/alert.service"
@@ -157,6 +157,11 @@ export class DataListComponent {
       label: this.literals.columns.VALOR,
     },
   ]
+
+  protected settings: ITableSettings = {
+    selected: false,
+    singleSelected: true,
+  }
 
   protected actions: ITableAction[] = [
     {

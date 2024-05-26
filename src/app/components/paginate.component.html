@@ -4,7 +4,7 @@
     {{ literals.showing }}
 
     <span class="font-semibold text-gray-900 dark:text-white">
-      {{ (page * pageSize) + 1 }} - {{ (page + 1) * pageSize }}
+      {{ (page * pageSize) + 1 }} - {{ (page + 1) * pageSize > countTotalItems ? countTotalItems : (page + 1) * pageSize }}
     </span>
   </span>
 

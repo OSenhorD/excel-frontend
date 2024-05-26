@@ -266,7 +266,7 @@ function transformLiterals(literals?: ITableLiterals): ITableLiterals {
 
 function transformSettings(settings?: ITableSettings): ITableSettings {
   return {
-    selected: settings?.selected !== false,
-    singleSelected: settings?.singleSelected === false,
+    selected: !(settings?.selected === false),
+    singleSelected: !(settings?.singleSelected === false),
   }
 }

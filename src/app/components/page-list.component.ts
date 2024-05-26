@@ -13,6 +13,7 @@ import { Subscription } from "rxjs"
 import {
   ITableColumn,
   ITableLiterals,
+  ITableSettings,
   TableComponent,
 } from "src/app/components/table.component"
 
@@ -62,7 +63,6 @@ export class PageListComponent implements OnInit, OnDestroy {
 
   protected _page: number = 0
   @Input("page-size") pageSize: number = Math.round((document.body.clientHeight - 325) / 100 * 2)
-  @Input("count-total-items") countTotalItems: number = 0
 
   protected filterParams!: IParams
   // Parâmetros que serão usados na construção da url para consumo da API
@@ -74,7 +74,11 @@ export class PageListComponent implements OnInit, OnDestroy {
   @Input("exclude-actions") excludeActions: string[] = []
 
   @Input() items: IItem[] = []
+  protected countTotalItems: number = 0
+
   @Input("table-columns") tableColumns: ITableColumn[] = []
+  @Input("table-settings") tableSettings!: ITableSettings
+
   @Input() literals: IPageListLiterals = {
     table: {
       all_items: "Todos os itens",
