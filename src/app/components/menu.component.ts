@@ -4,7 +4,6 @@ import {
   Component,
   inject,
   Input,
-  OnInit,
 } from "@angular/core"
 
 import { PageService } from "src/app/services/page.service"

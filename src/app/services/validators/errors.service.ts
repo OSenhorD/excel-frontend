@@ -40,7 +40,6 @@ export class ErrorsService {
    * @returns
    */
   showError = (error: any): string => {
-    console.log(error)
     if (!error) return this._literals.required
 
     switch (Object.keys(error)[0]) {
